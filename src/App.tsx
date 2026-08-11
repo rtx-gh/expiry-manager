@@ -25,6 +25,13 @@ function getBlankCells(year: number, month: number) {
   return blankCells;
 }
 
+function getDiffDays(expiryDate: Date, today: Date) {
+  // ミリ秒計算なので、1000ミリ秒*60秒*60分*24時間で補正して日単位で計算している
+  const diffDays = (expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+
+  return diffDays;
+}
+
 function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
@@ -162,8 +169,9 @@ function App() {
               ))
               // 実際に商品名を表示
               .map((product) => {
-                // ミリ秒計算なので、1000ミリ秒*60秒*60分*24時間で補正して日単位で計算している
-                const diffDays = (product.expiryDate.getTime() - todayAtMidnight.getTime()) / (1000 * 60 * 60 * 24);
+                const diffDays = getDiffDays(
+                  product.expiryDate, todayAtMidnight
+                );
 
                 // 商品のデフォルトの文字色は黒
                 let productColor = "black";
