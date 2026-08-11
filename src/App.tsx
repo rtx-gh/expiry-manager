@@ -32,6 +32,21 @@ function getDiffDays(expiryDate: Date, today: Date) {
   return diffDays;
 }
 
+function getProductColor(diffDays: number) {
+   // 商品のデフォルトの文字色は黒
+  let productColor = "black";
+  // 賞味期限までの日数に応じて警告色を段階的に変更する
+  if (diffDays < 0) {           // 当日か賞味期限切れは赤
+    productColor = "red";
+  } else if (diffDays <= 3) {   // 3日以内はオレンジ
+    productColor = "orange";
+  } else if (diffDays <= 7) {   // 7日以内は黄色
+    productColor = "yellow";
+  }
+
+  return productColor;
+}
+
 function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
@@ -173,16 +188,7 @@ function App() {
                   product.expiryDate, todayAtMidnight
                 );
 
-                // 商品のデフォルトの文字色は黒
-                let productColor = "black";
-                // 賞味期限までの日数に応じて警告色を段階的に変更する
-                if (diffDays < 0) {           // 当日か賞味期限切れは赤
-                  productColor = "red";
-                } else if (diffDays <= 3) {   // 3日以内はオレンジ
-                  productColor = "orange";
-                } else if (diffDays <= 7) {   // 7日以内は黄色
-                  productColor = "yellow";
-                }
+                const productColor = getProductColor(diffDays);
 
                 return (
                   <div
