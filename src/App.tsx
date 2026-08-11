@@ -13,6 +13,18 @@ function getDays(year: number, month: number) {
   return days;
 }
 
+function getBlankCells(year: number, month: number) {
+  // 選択した月の1日を取得
+  const firstDate = new Date(year, month - 1, 1);
+  // firstDateが何曜日かを取得 (0:日, 1:月, 2:火, 3:水, 4:木, 5:金, 6:土)
+  const firstWeekday = firstDate.getDay();
+  // firstWeekday個の空白セルを作成するための配列
+  // 例えば「firstWeekday = 3」で水曜日なら「日、月、火」で3個となる
+  const blankCells = Array.from({length: firstWeekday}, (_, i) => i);
+
+  return blankCells;
+}
+
 function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
@@ -26,17 +38,11 @@ function App() {
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
 
   const days = getDays(selectedYear, selectedMonth);
+  const blankCells = getBlankCells(selectedYear, selectedMonth);
 
   // 1~12までの月一覧を扱う配列
   const months = Array.from({ length: 12}, (_, i) => i+1);
 
-  // 選択した月の1日を取得
-  const firstDate = new Date(selectedYear, selectedMonth - 1, 1);
-  // firstDateが何曜日かを取得 (0:日, 1:月, 2:火, 3:水, 4:木, 5:金, 6:土)
-  const firstWeekday = firstDate.getDay();
-  // firstWeekday個の空白セルを作成するための配列
-  // 例えば「firstWeekday = 3」で水曜日なら「日、月、火」で3個となる
-  const blankCells = Array.from({length: firstWeekday}, (_, i) => i);
 
   // 今日の0:00:00を取得
   const todayAtMidnight = new Date (
@@ -126,7 +132,6 @@ function App() {
       </div>
 
       <h2 style={{color: "black"}}>{selectedYear}年 {selectedMonth}月</h2>
-      <h2 style={{color: "black"}}>{firstWeekday}日</h2>
 
       <div className="calendar-grid">
         {["日", "月", "火", "水", "木", "金", "土"].map((weekday) => (
