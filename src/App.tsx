@@ -5,25 +5,35 @@ function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
   const nextYear = today.getFullYear() + 1;
-  const startYear = thisYear - 20;
-  const endYear = thisYear + 20;
+  // 選択可能な最初の年
+  // const startYear = thisYear - 20;
+  // 選択可能な最後の年
+  // const endYear = thisYear + 20;
   const [selectedYear, setSelectedYear] = useState(thisYear);
   // getMonth()は0～11を返すため、+1して1～12に補正する
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
 
-  // 月の最終日を取得する。ここは翌月の0日(当月の最終日)なのでselectedMonth - 1ではない
+  // 月の最終日の日付を取得する
+  // ここは翌月の0日(当月の最終日)なのでselectedMonth - 1ではない
   const lastDate = new Date(selectedYear, selectedMonth, 0);
+  // lastDateから月の最終日が何日かを取得する
   const lastDay = lastDate.getDate();
 
+  // その月の1日からlastDay日までを扱う配列
   // Date(...)は月を0～11で扱うため、-1して渡す
   const days = Array.from({ length: lastDay}, (_, i) => new Date(selectedYear, selectedMonth - 1, i + 1));
-
+  // 1~12までの月一覧を扱う配列
   const months = Array.from({ length: 12}, (_, i) => i+1);
 
+  // 選択した月の1日を取得
   const firstDate = new Date(selectedYear, selectedMonth - 1, 1);
+  // firstDateが何曜日かを取得 (0:日, 1:月, 2:火, 3:水, 4:木, 5:金, 6:土)
   const firstWeekday = firstDate.getDay();
+  // firstWeekday個の空白セルを作成するための配列
+  // 例えば「firstWeekday = 3」で水曜日なら「日、月、火」で3個となる
   const blankCells = Array.from({length: firstWeekday}, (_, i) => i);
 
+  // 今日の0:00:00を取得
   const todayAtMidnight = new Date (
     today.getFullYear(),
     today.getMonth(),
@@ -76,8 +86,9 @@ function App() {
     { name: "ラーメン", expiryDate: new Date(2026, 7, 31) },
   ]);
 
-  const [newProductName, setNewProductName] = useState("");
-  const [newExpiryDate, setNewExpiryDate] = useState("");
+  // 商品追加機能に使用予定
+  // const [newProductName, setNewProductName] = useState("");
+  // const [newExpiryDate, setNewExpiryDate] = useState("");
   
   return (
     <div>
@@ -86,7 +97,7 @@ function App() {
         <select
           value={selectedYear}
           onChange={(event) => {
-            // Number()でstring型のevent.target.value->number型のsetSelectedYearに変換して型エラーを防いでいる
+            // Number()で「string型のevent.target.value」->「number型のsetSelectedYear」に変換して型エラーを防いでいる
             setSelectedYear(Number(event.target.value));
           }}>
           <option>{thisYear}</option>
@@ -128,7 +139,7 @@ function App() {
         ))}
 
         {days.map((day) => (
-          // getTime()はdayから日付を時刻00:00:00の日付として返す
+          // getTime()はdayから日付を時刻0:00:00の日付として返す
           <div
             className="calendar-cell"
             key={day.getTime()}
@@ -144,8 +155,9 @@ function App() {
                 // ミリ秒計算なので、1000ミリ秒*60秒*60分*24時間で補正して日単位で計算している
                 const diffDays = (product.expiryDate.getTime() - todayAtMidnight.getTime()) / (1000 * 60 * 60 * 24);
 
+                // 商品のデフォルトの文字色は黒
                 let productColor = "black";
-
+                // 賞味期限までの日数に応じて警告色を段階的に変更する
                 if (diffDays < 0) {           // 当日か賞味期限切れは赤
                   productColor = "red";
                 } else if (diffDays <= 3) {   // 3日以内はオレンジ
