@@ -1,6 +1,18 @@
 import "./App.css";
 import { useState } from 'react';
 
+function getDays(year: number, month: number) {
+  // 月の最終日の日付を取得する
+  const lastDate = new Date(year, month, 0);
+  // lastDateから月の最終日が何日かを取得する
+  const lastDay = lastDate.getDate();
+
+  // その月の1日からlastDay日までを扱う配列
+  // Date(...)は月を0～11で扱うため、-1して渡す
+  const days = Array.from({ length: lastDay}, (_, i) => new Date(year, month - 1, i + 1));
+  return days;
+}
+
 function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
@@ -13,15 +25,8 @@ function App() {
   // getMonth()は0～11を返すため、+1して1～12に補正する
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
 
-  // 月の最終日の日付を取得する
-  // ここは翌月の0日(当月の最終日)なのでselectedMonth - 1ではない
-  const lastDate = new Date(selectedYear, selectedMonth, 0);
-  // lastDateから月の最終日が何日かを取得する
-  const lastDay = lastDate.getDate();
+  const days = getDays(selectedYear, selectedMonth);
 
-  // その月の1日からlastDay日までを扱う配列
-  // Date(...)は月を0～11で扱うため、-1して渡す
-  const days = Array.from({ length: lastDay}, (_, i) => new Date(selectedYear, selectedMonth - 1, i + 1));
   // 1~12までの月一覧を扱う配列
   const months = Array.from({ length: 12}, (_, i) => i+1);
 
