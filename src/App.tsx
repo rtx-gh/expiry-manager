@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState } from 'react';
+import { products as initialProducts } from "./products";
 
 function getDays(year: number, month: number) {
   // 月の最終日の日付を取得する
@@ -73,51 +74,11 @@ function App() {
     today.getDate()
   );
 
-  const [products, setProducts] = useState([
-    // 7月分
-    { name: "牛乳", expiryDate: new Date(2026, 6, 2) },
-    { name: "ウィンナー", expiryDate: new Date(2026, 6, 4) },
-    { name: "ベーコン", expiryDate: new Date(2026, 6, 6) },
-    { name: "ハム", expiryDate: new Date(2026, 6, 7) },
-    { name: "豚肉", expiryDate: new Date(2026, 6, 9) },
-    { name: "鶏もも肉", expiryDate: new Date(2026, 6, 11) },
-    { name: "鶏むね肉", expiryDate: new Date(2026, 6, 13) },
-    { name: "ひき肉", expiryDate: new Date(2026, 6, 14) },
-    { name: "スライスチーズ", expiryDate: new Date(2026, 6, 16) },
-    { name: "ヨーグルト", expiryDate: new Date(2026, 6, 18) },
-    { name: "バター", expiryDate: new Date(2026, 6, 19) },
-    { name: "生クリーム", expiryDate: new Date(2026, 6, 21) },
-    { name: "豆腐", expiryDate: new Date(2026, 6, 22) },
-    { name: "納豆", expiryDate: new Date(2026, 6, 24) },
-    { name: "キムチ", expiryDate: new Date(2026, 6, 26) },
-    { name: "めかぶ", expiryDate: new Date(2026, 6, 27) },
-    { name: "そば", expiryDate: new Date(2026, 6, 28) },
-    { name: "うどん", expiryDate: new Date(2026, 6, 29) },
-    { name: "焼きそば", expiryDate: new Date(2026, 6, 30) },
-    { name: "ラーメン", expiryDate: new Date(2026, 6, 31) },
-
-    // 8月分
-    { name: "牛乳", expiryDate: new Date(2026, 7, 1) },
-    { name: "ウィンナー", expiryDate: new Date(2026, 7, 3) },
-    { name: "ベーコン", expiryDate: new Date(2026, 7, 5) },
-    { name: "ハム", expiryDate: new Date(2026, 7, 8) },
-    { name: "豚肉", expiryDate: new Date(2026, 7, 10) },
-    { name: "鶏もも肉", expiryDate: new Date(2026, 7, 12) },
-    { name: "鶏むね肉", expiryDate: new Date(2026, 7, 13) },
-    { name: "ひき肉", expiryDate: new Date(2026, 7, 15) },
-    { name: "スライスチーズ", expiryDate: new Date(2026, 7, 16) },
-    { name: "ヨーグルト", expiryDate: new Date(2026, 7, 18) },
-    { name: "バター", expiryDate: new Date(2026, 7, 20) },
-    { name: "生クリーム", expiryDate: new Date(2026, 7, 21) },
-    { name: "豆腐", expiryDate: new Date(2026, 7, 23) },
-    { name: "納豆", expiryDate: new Date(2026, 7, 24) },
-    { name: "キムチ", expiryDate: new Date(2026, 7, 25) },
-    { name: "めかぶ", expiryDate: new Date(2026, 7, 27) },
-    { name: "そば", expiryDate: new Date(2026, 7, 28) },
-    { name: "うどん", expiryDate: new Date(2026, 7, 29) },
-    { name: "焼きそば", expiryDate: new Date(2026, 7, 30) },
-    { name: "ラーメン", expiryDate: new Date(2026, 7, 31) },
-  ]);
+  // useStateは、値を状態として保持し、値が変更されたときに画面を再描画するためのReactの機能
+  // 将来的に商品追加機能を実装した際にuseStateが必要だが、現状は「import { products } from "./products";」で十分
+  // products: 現在の商品データ
+  // setProducts: 商品データを更新する関数
+  const [products, setProducts] = useState(initialProducts);
 
   // 商品追加機能に使用予定
   // const [newProductName, setNewProductName] = useState("");
