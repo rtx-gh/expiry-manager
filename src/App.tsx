@@ -37,7 +37,7 @@ function getProductColor(diffDays: number) {
    // 商品のデフォルトの文字色は黒
   let productColor = "black";
   // 賞味期限までの日数に応じて警告色を段階的に変更する
-  if (diffDays < 0) {           // 当日か賞味期限切れは赤
+  if (diffDays <= 0) {           // 当日か賞味期限切れは赤
     productColor = "red";
   } else if (diffDays <= 3) {   // 3日以内はオレンジ
     productColor = "orange";
