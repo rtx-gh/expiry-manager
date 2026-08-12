@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { products as initialProducts } from "./products";
 
 function getDays(year: number, month: number) {
@@ -48,6 +48,56 @@ function getProductColor(diffDays: number) {
   return productColor;
 }
 
+type DateSelectorProps = {
+  selectedYear: number;
+  selectedMonth: number;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
+  thisYear: number;
+  nextYear: number;
+  months: number[];
+};
+
+function DateSelector({
+  // 親Reactコンポーネントが持つ値を使用する場合は、propsとして受け取る
+  selectedYear,
+  selectedMonth,
+  setSelectedYear,
+  setSelectedMonth,
+  thisYear,
+  nextYear,
+  months
+}: DateSelectorProps) {
+
+  return (
+    <div>
+      <select
+        value={selectedYear}
+        onChange={(event) => {
+          // Number()で「string型のevent.target.value」->「number型のsetSelectedYear」に変換して型エラーを防いでいる
+          setSelectedYear(Number(event.target.value));
+        }}>
+        <option>{thisYear}</option>
+        <option>{nextYear}</option>
+      </select>年
+      <select
+        value={selectedMonth}
+        onChange={(event) => {
+          setSelectedMonth(Number(event.target.value));
+        }}>
+        {months.map((month) => (
+          <option
+            key={month}
+            value={month}
+          >
+            {month}
+          </option>
+        ))}
+      </select>月
+    </div>
+  )
+}
+
 function App() {
   const today = new Date();
   const thisYear = today.getFullYear();
@@ -65,7 +115,6 @@ function App() {
 
   // 1~12までの月一覧を扱う配列
   const months = Array.from({ length: 12}, (_, i) => i+1);
-
 
   // 今日の0:00:00を取得
   const todayAtMidnight = new Date (
@@ -87,32 +136,16 @@ function App() {
   return (
     <div>
       <h1 style={{color: "black"}}>賞味期限管理アプリ</h1>
-      <div>
-        <select
-          value={selectedYear}
-          onChange={(event) => {
-            // Number()で「string型のevent.target.value」->「number型のsetSelectedYear」に変換して型エラーを防いでいる
-            setSelectedYear(Number(event.target.value));
-          }}>
-          <option>{thisYear}</option>
-          <option>{nextYear}</option>
-        </select>年
-
-        <select
-          value={selectedMonth}
-          onChange={(event) => {
-            setSelectedMonth(Number(event.target.value));
-          }}>
-            {months.map((month) => (
-              <option
-                key={month}
-                value={month}
-              >
-                {month}
-              </option>
-          ))}
-        </select>月
-      </div>
+      <DateSelector
+        // props名 = {App側の変数名}
+        selectedYear = {selectedYear}
+        selectedMonth = {selectedMonth}
+        setSelectedYear = {setSelectedYear}
+        setSelectedMonth = {setSelectedMonth}
+        thisYear = {thisYear}
+        nextYear = {nextYear}
+        months = {months}
+      />
 
       <h2 style={{color: "black"}}>{selectedYear}年 {selectedMonth}月</h2>
 
