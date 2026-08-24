@@ -124,15 +124,62 @@ function App() {
   );
 
   // useStateは、値を状態として保持し、値が変更されたときに画面を再描画するためのReactの機能
-  // 将来的に商品追加機能を実装した際にuseStateが必要だが、現状は「import { products } from "./products";」で十分
-  // products: 現在の商品データ
-  // setProducts: 商品データを更新する関数
+  // productsは「現在の商品データ」、setProductsは「商品データを更新する関数」
+  // useState()は[現在の値, 値を更新する関数]を返すから、配列の分割代入でproductsとsetProductsとして受け取る
+
+    /*
+      【分割代入とは】
+      ◆配列の分割代入
+      例えば、次のように配列の要素を個別の変数へ一度に代入できる構文のこと。
+      const array = [1, 2, 3];
+      const [a, b, c] = array;
+      console.log(a); // 1
+      console.log(b); // 2
+      console.log(c); // 3
+
+      ◆スプレッド構文を使った配列の分割代入
+      配列の最初の要素を個別の変数に代入し、残りの要素を別の配列としてまとめて取得することもできる。
+      const array = [1, 2, 3];
+      const [num1, ...other] = array;
+      console.log(num1); // 1
+      console.log(other); // [2, 3]
+
+      ◆オブジェクトの分割代入
+      オブジェクトのプロパティを個別の変数に代入することができる。
+      const obj = { name: "Taro", age: 25 };
+      const { name, age } = obj;
+      console.log(name); // "Taro"
+      console.log(age); // 25
+
+      ◆関数の引数における分割代入
+      関数の引数としてオブジェクトを受け取る際に、分割代入を使って個別の変数として扱うことができる。
+      function greet({ name, age }) {
+        console.log(`Hello, ${name}! You are ${age} years old.`);
+      }
+      const person = { name: "Taro", age: 25 };
+      greet(person); // "Hello, Taro! You are 25 years old."
+    */
+   
+  // import { products as initialProducts } from "./products";で、products.tsをinitialProductsとしてインポートしている
   const [products, setProducts] = useState(initialProducts);
 
-  // 商品追加機能に使用予定
-  // const [newProductName, setNewProductName] = useState("");
-  // const [newExpiryDate, setNewExpiryDate] = useState("");
-  
+  // 新しく追加する商品名と賞味期限を保持するstate
+  // useState("")で初期値が空文字のstateを作成している
+  // useState("")も[現在の値, 値を更新する関数]を返すので、分割代入でnewProductNameとsetNewProductNameとして受け取る
+  const [newProductName, setNewProductName] = useState("");
+  const [newExpiryDate, setNewExpiryDate] = useState("");
+
+  function addProduct() {
+    const newProduct = {
+      name: newProductName,
+      expiryDate: new Date(newExpiryDate),
+    };
+
+    setProducts([...products, newProduct]);
+    setNewProductName("");
+    setNewExpiryDate("");
+  }
+
   return (
     <div>
       <h1 style={{color: "black"}}>賞味期限管理アプリ</h1>
